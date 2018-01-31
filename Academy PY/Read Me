@@ -1,0 +1,1717 @@
+
+
+```python
+# Dependencies
+import os 
+import csv 
+import pandas as pd 
+import numpy as np
+```
+
+
+```python
+# load CSV
+schools_csv="Resources/schools_complete.csv"
+students_csv="Resources/students_complete.csv"
+```
+
+
+```python
+# Read with pandas
+schools_original_pd = pd.read_csv(schools_csv)
+students_original_pd = pd.read_csv(students_csv)
+schools_df = schools_original_pd.rename(columns={"name":"School", "type": "Type","size":"SchoolSize","budget": "TotalBudget"})
+students_df = students_original_pd.rename(columns={"name":"StudentName", "gender": "Gender", "school":"School", 
+                                                    "grade": "Grade", "reading_score": "ReadingScore","math_score": "MathScore"}) 
+                                                    
+                                               
+students_df.count()
+```
+
+
+
+
+    Student ID      39170
+    StudentName     39170
+    Gender          39170
+    Grade           39170
+    School          39170
+    ReadingScore    39170
+    MathScore       39170
+    dtype: int64
+
+
+
+
+```python
+students_df.head()
+```
+
+
+
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Student ID</th>
+      <th>StudentName</th>
+      <th>Gender</th>
+      <th>Grade</th>
+      <th>School</th>
+      <th>ReadingScore</th>
+      <th>MathScore</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>Paul Bradley</td>
+      <td>M</td>
+      <td>9th</td>
+      <td>Huang High School</td>
+      <td>66</td>
+      <td>79</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>Victor Smith</td>
+      <td>M</td>
+      <td>12th</td>
+      <td>Huang High School</td>
+      <td>94</td>
+      <td>61</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>Kevin Rodriguez</td>
+      <td>M</td>
+      <td>12th</td>
+      <td>Huang High School</td>
+      <td>90</td>
+      <td>60</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>Dr. Richard Scott</td>
+      <td>M</td>
+      <td>12th</td>
+      <td>Huang High School</td>
+      <td>67</td>
+      <td>58</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>Bonnie Ray</td>
+      <td>F</td>
+      <td>9th</td>
+      <td>Huang High School</td>
+      <td>97</td>
+      <td>84</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+schools_df.head()
+```
+
+
+
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>School ID</th>
+      <th>School</th>
+      <th>Type</th>
+      <th>SchoolSize</th>
+      <th>TotalBudget</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>Huang High School</td>
+      <td>District</td>
+      <td>2917</td>
+      <td>1910635</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>Figueroa High School</td>
+      <td>District</td>
+      <td>2949</td>
+      <td>1884411</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>Shelton High School</td>
+      <td>Charter</td>
+      <td>1761</td>
+      <td>1056600</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>Hernandez High School</td>
+      <td>District</td>
+      <td>4635</td>
+      <td>3022020</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>Griffin High School</td>
+      <td>Charter</td>
+      <td>1468</td>
+      <td>917500</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+# mergign data frames
+academy_df=pd.merge(students_df,schools_df, on="School", how="outer")
+academy_df.head()
+```
+
+
+
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Student ID</th>
+      <th>StudentName</th>
+      <th>Gender</th>
+      <th>Grade</th>
+      <th>School</th>
+      <th>ReadingScore</th>
+      <th>MathScore</th>
+      <th>School ID</th>
+      <th>Type</th>
+      <th>SchoolSize</th>
+      <th>TotalBudget</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>Paul Bradley</td>
+      <td>M</td>
+      <td>9th</td>
+      <td>Huang High School</td>
+      <td>66</td>
+      <td>79</td>
+      <td>0</td>
+      <td>District</td>
+      <td>2917</td>
+      <td>1910635</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>Victor Smith</td>
+      <td>M</td>
+      <td>12th</td>
+      <td>Huang High School</td>
+      <td>94</td>
+      <td>61</td>
+      <td>0</td>
+      <td>District</td>
+      <td>2917</td>
+      <td>1910635</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>Kevin Rodriguez</td>
+      <td>M</td>
+      <td>12th</td>
+      <td>Huang High School</td>
+      <td>90</td>
+      <td>60</td>
+      <td>0</td>
+      <td>District</td>
+      <td>2917</td>
+      <td>1910635</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>Dr. Richard Scott</td>
+      <td>M</td>
+      <td>12th</td>
+      <td>Huang High School</td>
+      <td>67</td>
+      <td>58</td>
+      <td>0</td>
+      <td>District</td>
+      <td>2917</td>
+      <td>1910635</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>Bonnie Ray</td>
+      <td>F</td>
+      <td>9th</td>
+      <td>Huang High School</td>
+      <td>97</td>
+      <td>84</td>
+      <td>0</td>
+      <td>District</td>
+      <td>2917</td>
+      <td>1910635</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+# Disrict Summary
+
+
+```python
+Total_Schools = academy_df.groupby(["School"])["Type"].unique().value_counts().sum()
+Total_students = academy_df["StudentName"].value_counts().sum()
+Total_budget = academy_df.groupby(["School"])["TotalBudget"].mean().sum()
+Average_math_score = academy_df.MathScore.mean()
+Average_reading_score = academy_df.ReadingScore.mean()
+Total_Reading_passing = academy_df.loc[academy_df["ReadingScore"] >=70,:]["StudentName"].count()
+Reading_passing_pct = Total_Reading_passing/Total_students *100
+Total_math_passing = academy_df.loc[academy_df["MathScore"] >=70,:]["StudentName"].count()
+Math_passing_pct = Total_math_passing/Total_students *100
+Overall_passing = (Reading_passing_pct+Math_passing_pct)/2
+Overall_passing
+```
+
+
+
+
+    80.393158029103915
+
+
+
+
+```python
+district_summary = pd.DataFrame({"Total Schools": [Total_Schools],"Total Budget": Total_budget, "Average Math Score": Average_math_score,
+                                 "Average Reading Score": Average_reading_score, "Passing Math %": Math_passing_pct, 
+                                 "Passing Reading %": Reading_passing_pct, "Overall Passing %": Overall_passing})
+district_summary
+```
+
+
+
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Average Math Score</th>
+      <th>Average Reading Score</th>
+      <th>Overall Passing %</th>
+      <th>Passing Math %</th>
+      <th>Passing Reading %</th>
+      <th>Total Budget</th>
+      <th>Total Schools</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>78.985371</td>
+      <td>81.87784</td>
+      <td>80.393158</td>
+      <td>74.980853</td>
+      <td>85.805463</td>
+      <td>24649428</td>
+      <td>15</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+# School Summary
+
+
+```python
+Unique_Schools = academy_df.School.unique()
+School_type = academy_df.groupby(["School"])["Type"].unique()
+Total_students_perschool = academy_df["School"].value_counts()
+Total_budget_perschool = academy_df.groupby(["School"])["TotalBudget"].mean()
+Budget_per_student = Total_budget_perschool/Total_students_perschool
+Average_math_perschool = academy_df.groupby(["School"])["MathScore"].mean()
+Average_reading_perschool = academy_df.groupby(["School"])["ReadingScore"].mean()
+Reading_passing_perschool = academy_df.loc[academy_df["ReadingScore"] >=70,"School"].value_counts()
+Math_passing_perschool = academy_df.loc[academy_df["MathScore"] >=70,"School"].value_counts()
+Reading_passing_pct_perschool = Reading_passing_perschool/Total_students_perschool *100
+Math_passing_pct_perschool= Math_passing_perschool/Total_students_perschool *100
+Overall_passing_perschool = (Reading_passing_pct_perschool+Math_passing_pct_perschool)/2
+Unique_Schools
+```
+
+
+
+
+    array(['Huang High School', 'Figueroa High School', 'Shelton High School',
+           'Hernandez High School', 'Griffin High School',
+           'Wilson High School', 'Cabrera High School', 'Bailey High School',
+           'Holden High School', 'Pena High School', 'Wright High School',
+           'Rodriguez High School', 'Johnson High School', 'Ford High School',
+           'Thomas High School'], dtype=object)
+
+
+
+
+```python
+school_summary_perschool = pd.DataFrame({"School Type": School_type, 
+                            "Total Students": Total_students_perschool,
+                            "Total Budget": Total_budget_perschool,
+                            "Budget per Student": Budget_per_student,
+                            "Average Math Score %": Average_math_perschool, 
+                            "Average Reading Score %": Average_reading_perschool,
+                            "Passing Reading %": Reading_passing_pct_perschool,
+                            "Passing Math %": Math_passing_pct_perschool,
+                            "Overall Passing %": Overall_passing_perschool
+                                        })
+
+cols = ['School Type','Total Students','Total Budget','Budget per Student', 'Average Math Score %', 
+        'Passing Math %','Average Reading Score %', 'Passing Reading %', 'Overall Passing %']
+Schools_summary_final = school_summary_perschool[cols]
+Schools_summary_final
+```
+
+
+
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>School Type</th>
+      <th>Total Students</th>
+      <th>Total Budget</th>
+      <th>Budget per Student</th>
+      <th>Average Math Score %</th>
+      <th>Passing Math %</th>
+      <th>Average Reading Score %</th>
+      <th>Passing Reading %</th>
+      <th>Overall Passing %</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Bailey High School</th>
+      <td>[District]</td>
+      <td>4976</td>
+      <td>3124928</td>
+      <td>628.0</td>
+      <td>77.048432</td>
+      <td>66.680064</td>
+      <td>81.033963</td>
+      <td>81.933280</td>
+      <td>74.306672</td>
+    </tr>
+    <tr>
+      <th>Cabrera High School</th>
+      <td>[Charter]</td>
+      <td>1858</td>
+      <td>1081356</td>
+      <td>582.0</td>
+      <td>83.061895</td>
+      <td>94.133477</td>
+      <td>83.975780</td>
+      <td>97.039828</td>
+      <td>95.586652</td>
+    </tr>
+    <tr>
+      <th>Figueroa High School</th>
+      <td>[District]</td>
+      <td>2949</td>
+      <td>1884411</td>
+      <td>639.0</td>
+      <td>76.711767</td>
+      <td>65.988471</td>
+      <td>81.158020</td>
+      <td>80.739234</td>
+      <td>73.363852</td>
+    </tr>
+    <tr>
+      <th>Ford High School</th>
+      <td>[District]</td>
+      <td>2739</td>
+      <td>1763916</td>
+      <td>644.0</td>
+      <td>77.102592</td>
+      <td>68.309602</td>
+      <td>80.746258</td>
+      <td>79.299014</td>
+      <td>73.804308</td>
+    </tr>
+    <tr>
+      <th>Griffin High School</th>
+      <td>[Charter]</td>
+      <td>1468</td>
+      <td>917500</td>
+      <td>625.0</td>
+      <td>83.351499</td>
+      <td>93.392371</td>
+      <td>83.816757</td>
+      <td>97.138965</td>
+      <td>95.265668</td>
+    </tr>
+    <tr>
+      <th>Hernandez High School</th>
+      <td>[District]</td>
+      <td>4635</td>
+      <td>3022020</td>
+      <td>652.0</td>
+      <td>77.289752</td>
+      <td>66.752967</td>
+      <td>80.934412</td>
+      <td>80.862999</td>
+      <td>73.807983</td>
+    </tr>
+    <tr>
+      <th>Holden High School</th>
+      <td>[Charter]</td>
+      <td>427</td>
+      <td>248087</td>
+      <td>581.0</td>
+      <td>83.803279</td>
+      <td>92.505855</td>
+      <td>83.814988</td>
+      <td>96.252927</td>
+      <td>94.379391</td>
+    </tr>
+    <tr>
+      <th>Huang High School</th>
+      <td>[District]</td>
+      <td>2917</td>
+      <td>1910635</td>
+      <td>655.0</td>
+      <td>76.629414</td>
+      <td>65.683922</td>
+      <td>81.182722</td>
+      <td>81.316421</td>
+      <td>73.500171</td>
+    </tr>
+    <tr>
+      <th>Johnson High School</th>
+      <td>[District]</td>
+      <td>4761</td>
+      <td>3094650</td>
+      <td>650.0</td>
+      <td>77.072464</td>
+      <td>66.057551</td>
+      <td>80.966394</td>
+      <td>81.222432</td>
+      <td>73.639992</td>
+    </tr>
+    <tr>
+      <th>Pena High School</th>
+      <td>[Charter]</td>
+      <td>962</td>
+      <td>585858</td>
+      <td>609.0</td>
+      <td>83.839917</td>
+      <td>94.594595</td>
+      <td>84.044699</td>
+      <td>95.945946</td>
+      <td>95.270270</td>
+    </tr>
+    <tr>
+      <th>Rodriguez High School</th>
+      <td>[District]</td>
+      <td>3999</td>
+      <td>2547363</td>
+      <td>637.0</td>
+      <td>76.842711</td>
+      <td>66.366592</td>
+      <td>80.744686</td>
+      <td>80.220055</td>
+      <td>73.293323</td>
+    </tr>
+    <tr>
+      <th>Shelton High School</th>
+      <td>[Charter]</td>
+      <td>1761</td>
+      <td>1056600</td>
+      <td>600.0</td>
+      <td>83.359455</td>
+      <td>93.867121</td>
+      <td>83.725724</td>
+      <td>95.854628</td>
+      <td>94.860875</td>
+    </tr>
+    <tr>
+      <th>Thomas High School</th>
+      <td>[Charter]</td>
+      <td>1635</td>
+      <td>1043130</td>
+      <td>638.0</td>
+      <td>83.418349</td>
+      <td>93.272171</td>
+      <td>83.848930</td>
+      <td>97.308869</td>
+      <td>95.290520</td>
+    </tr>
+    <tr>
+      <th>Wilson High School</th>
+      <td>[Charter]</td>
+      <td>2283</td>
+      <td>1319574</td>
+      <td>578.0</td>
+      <td>83.274201</td>
+      <td>93.867718</td>
+      <td>83.989488</td>
+      <td>96.539641</td>
+      <td>95.203679</td>
+    </tr>
+    <tr>
+      <th>Wright High School</th>
+      <td>[Charter]</td>
+      <td>1800</td>
+      <td>1049400</td>
+      <td>583.0</td>
+      <td>83.682222</td>
+      <td>93.333333</td>
+      <td>83.955000</td>
+      <td>96.611111</td>
+      <td>94.972222</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+# Top 5 schools
+
+
+```python
+Top_performing_schools = Schools_summary_final.sort_values('Overall Passing %',ascending=False).head(5)
+Top_performing_schools
+```
+
+
+
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>School Type</th>
+      <th>Total Students</th>
+      <th>Total Budget</th>
+      <th>Budget per Student</th>
+      <th>Average Math Score %</th>
+      <th>Passing Math %</th>
+      <th>Average Reading Score %</th>
+      <th>Passing Reading %</th>
+      <th>Overall Passing %</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Cabrera High School</th>
+      <td>[Charter]</td>
+      <td>1858</td>
+      <td>1081356</td>
+      <td>582.0</td>
+      <td>83.061895</td>
+      <td>94.133477</td>
+      <td>83.975780</td>
+      <td>97.039828</td>
+      <td>95.586652</td>
+    </tr>
+    <tr>
+      <th>Thomas High School</th>
+      <td>[Charter]</td>
+      <td>1635</td>
+      <td>1043130</td>
+      <td>638.0</td>
+      <td>83.418349</td>
+      <td>93.272171</td>
+      <td>83.848930</td>
+      <td>97.308869</td>
+      <td>95.290520</td>
+    </tr>
+    <tr>
+      <th>Pena High School</th>
+      <td>[Charter]</td>
+      <td>962</td>
+      <td>585858</td>
+      <td>609.0</td>
+      <td>83.839917</td>
+      <td>94.594595</td>
+      <td>84.044699</td>
+      <td>95.945946</td>
+      <td>95.270270</td>
+    </tr>
+    <tr>
+      <th>Griffin High School</th>
+      <td>[Charter]</td>
+      <td>1468</td>
+      <td>917500</td>
+      <td>625.0</td>
+      <td>83.351499</td>
+      <td>93.392371</td>
+      <td>83.816757</td>
+      <td>97.138965</td>
+      <td>95.265668</td>
+    </tr>
+    <tr>
+      <th>Wilson High School</th>
+      <td>[Charter]</td>
+      <td>2283</td>
+      <td>1319574</td>
+      <td>578.0</td>
+      <td>83.274201</td>
+      <td>93.867718</td>
+      <td>83.989488</td>
+      <td>96.539641</td>
+      <td>95.203679</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+# Bottom 5 Schools
+
+
+```python
+Bottom_performing_schools = Schools_summary_final.sort_values('Overall Passing %',ascending=True).head(5)
+Bottom_performing_schools
+```
+
+
+
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>School Type</th>
+      <th>Total Students</th>
+      <th>Total Budget</th>
+      <th>Budget per Student</th>
+      <th>Average Math Score %</th>
+      <th>Passing Math %</th>
+      <th>Average Reading Score %</th>
+      <th>Passing Reading %</th>
+      <th>Overall Passing %</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Rodriguez High School</th>
+      <td>[District]</td>
+      <td>3999</td>
+      <td>2547363</td>
+      <td>637.0</td>
+      <td>76.842711</td>
+      <td>66.366592</td>
+      <td>80.744686</td>
+      <td>80.220055</td>
+      <td>73.293323</td>
+    </tr>
+    <tr>
+      <th>Figueroa High School</th>
+      <td>[District]</td>
+      <td>2949</td>
+      <td>1884411</td>
+      <td>639.0</td>
+      <td>76.711767</td>
+      <td>65.988471</td>
+      <td>81.158020</td>
+      <td>80.739234</td>
+      <td>73.363852</td>
+    </tr>
+    <tr>
+      <th>Huang High School</th>
+      <td>[District]</td>
+      <td>2917</td>
+      <td>1910635</td>
+      <td>655.0</td>
+      <td>76.629414</td>
+      <td>65.683922</td>
+      <td>81.182722</td>
+      <td>81.316421</td>
+      <td>73.500171</td>
+    </tr>
+    <tr>
+      <th>Johnson High School</th>
+      <td>[District]</td>
+      <td>4761</td>
+      <td>3094650</td>
+      <td>650.0</td>
+      <td>77.072464</td>
+      <td>66.057551</td>
+      <td>80.966394</td>
+      <td>81.222432</td>
+      <td>73.639992</td>
+    </tr>
+    <tr>
+      <th>Ford High School</th>
+      <td>[District]</td>
+      <td>2739</td>
+      <td>1763916</td>
+      <td>644.0</td>
+      <td>77.102592</td>
+      <td>68.309602</td>
+      <td>80.746258</td>
+      <td>79.299014</td>
+      <td>73.804308</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+# Average Reading Scores by grade
+
+
+```python
+grade9=academy_df.loc[academy_df["Grade"]=="9th",:]
+grade10=academy_df.loc[academy_df["Grade"]=="10th",:]
+grade11=academy_df.loc[academy_df["Grade"]=="11th",:]
+grade12=academy_df.loc[academy_df["Grade"]=="12th",:]
+```
+
+
+```python
+grade9_reading_score = grade9.groupby("School")["ReadingScore"].mean()
+grade10_reading_score = grade10.groupby("School")["ReadingScore"].mean()
+grade11_reading_score = grade11.groupby("School")["ReadingScore"].mean()
+grade12_reading_score = grade12.groupby("School")["ReadingScore"].mean()
+
+Reading_by_grade = pd.DataFrame({'9th Grade Average': grade9_reading_score,'10th Grade Average': grade10_reading_score, 
+                                 '11th Grade Average': grade11_reading_score, '12th Grade Average': grade12_reading_score})
+
+Reading_by_grade
+```
+
+
+
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>10th Grade Average</th>
+      <th>11th Grade Average</th>
+      <th>12th Grade Average</th>
+      <th>9th Grade Average</th>
+    </tr>
+    <tr>
+      <th>School</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Bailey High School</th>
+      <td>80.907183</td>
+      <td>80.945643</td>
+      <td>80.912451</td>
+      <td>81.303155</td>
+    </tr>
+    <tr>
+      <th>Cabrera High School</th>
+      <td>84.253219</td>
+      <td>83.788382</td>
+      <td>84.287958</td>
+      <td>83.676136</td>
+    </tr>
+    <tr>
+      <th>Figueroa High School</th>
+      <td>81.408912</td>
+      <td>80.640339</td>
+      <td>81.384863</td>
+      <td>81.198598</td>
+    </tr>
+    <tr>
+      <th>Ford High School</th>
+      <td>81.262712</td>
+      <td>80.403642</td>
+      <td>80.662338</td>
+      <td>80.632653</td>
+    </tr>
+    <tr>
+      <th>Griffin High School</th>
+      <td>83.706897</td>
+      <td>84.288089</td>
+      <td>84.013699</td>
+      <td>83.369193</td>
+    </tr>
+    <tr>
+      <th>Hernandez High School</th>
+      <td>80.660147</td>
+      <td>81.396140</td>
+      <td>80.857143</td>
+      <td>80.866860</td>
+    </tr>
+    <tr>
+      <th>Holden High School</th>
+      <td>83.324561</td>
+      <td>83.815534</td>
+      <td>84.698795</td>
+      <td>83.677165</td>
+    </tr>
+    <tr>
+      <th>Huang High School</th>
+      <td>81.512386</td>
+      <td>81.417476</td>
+      <td>80.305983</td>
+      <td>81.290284</td>
+    </tr>
+    <tr>
+      <th>Johnson High School</th>
+      <td>80.773431</td>
+      <td>80.616027</td>
+      <td>81.227564</td>
+      <td>81.260714</td>
+    </tr>
+    <tr>
+      <th>Pena High School</th>
+      <td>83.612000</td>
+      <td>84.335938</td>
+      <td>84.591160</td>
+      <td>83.807273</td>
+    </tr>
+    <tr>
+      <th>Rodriguez High School</th>
+      <td>80.629808</td>
+      <td>80.864811</td>
+      <td>80.376426</td>
+      <td>80.993127</td>
+    </tr>
+    <tr>
+      <th>Shelton High School</th>
+      <td>83.441964</td>
+      <td>84.373786</td>
+      <td>82.781671</td>
+      <td>84.122642</td>
+    </tr>
+    <tr>
+      <th>Thomas High School</th>
+      <td>84.254157</td>
+      <td>83.585542</td>
+      <td>83.831361</td>
+      <td>83.728850</td>
+    </tr>
+    <tr>
+      <th>Wilson High School</th>
+      <td>84.021452</td>
+      <td>83.764608</td>
+      <td>84.317673</td>
+      <td>83.939778</td>
+    </tr>
+    <tr>
+      <th>Wright High School</th>
+      <td>83.812757</td>
+      <td>84.156322</td>
+      <td>84.073171</td>
+      <td>83.833333</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+# Average Math Scores by Grade
+
+
+```python
+grade9_math_score = grade9.groupby("School")["MathScore"].mean()
+grade10_math_score = grade10.groupby("School")["MathScore"].mean()
+grade11_math_score = grade11.groupby("School")["MathScore"].mean()
+grade12_math_score = grade12.groupby("School")["MathScore"].mean()
+
+Math_by_grade = pd.DataFrame({'9th Grade Average': grade9_math_score,'10th Grade Average': grade10_math_score, 
+                                 '11th Grade Average': grade11_math_score, '12th Grade Average': grade12_math_score})
+
+Reading_by_grade
+```
+
+
+
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>10th Grade Average</th>
+      <th>11th Grade Average</th>
+      <th>12th Grade Average</th>
+      <th>9th Grade Average</th>
+    </tr>
+    <tr>
+      <th>School</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Bailey High School</th>
+      <td>80.907183</td>
+      <td>80.945643</td>
+      <td>80.912451</td>
+      <td>81.303155</td>
+    </tr>
+    <tr>
+      <th>Cabrera High School</th>
+      <td>84.253219</td>
+      <td>83.788382</td>
+      <td>84.287958</td>
+      <td>83.676136</td>
+    </tr>
+    <tr>
+      <th>Figueroa High School</th>
+      <td>81.408912</td>
+      <td>80.640339</td>
+      <td>81.384863</td>
+      <td>81.198598</td>
+    </tr>
+    <tr>
+      <th>Ford High School</th>
+      <td>81.262712</td>
+      <td>80.403642</td>
+      <td>80.662338</td>
+      <td>80.632653</td>
+    </tr>
+    <tr>
+      <th>Griffin High School</th>
+      <td>83.706897</td>
+      <td>84.288089</td>
+      <td>84.013699</td>
+      <td>83.369193</td>
+    </tr>
+    <tr>
+      <th>Hernandez High School</th>
+      <td>80.660147</td>
+      <td>81.396140</td>
+      <td>80.857143</td>
+      <td>80.866860</td>
+    </tr>
+    <tr>
+      <th>Holden High School</th>
+      <td>83.324561</td>
+      <td>83.815534</td>
+      <td>84.698795</td>
+      <td>83.677165</td>
+    </tr>
+    <tr>
+      <th>Huang High School</th>
+      <td>81.512386</td>
+      <td>81.417476</td>
+      <td>80.305983</td>
+      <td>81.290284</td>
+    </tr>
+    <tr>
+      <th>Johnson High School</th>
+      <td>80.773431</td>
+      <td>80.616027</td>
+      <td>81.227564</td>
+      <td>81.260714</td>
+    </tr>
+    <tr>
+      <th>Pena High School</th>
+      <td>83.612000</td>
+      <td>84.335938</td>
+      <td>84.591160</td>
+      <td>83.807273</td>
+    </tr>
+    <tr>
+      <th>Rodriguez High School</th>
+      <td>80.629808</td>
+      <td>80.864811</td>
+      <td>80.376426</td>
+      <td>80.993127</td>
+    </tr>
+    <tr>
+      <th>Shelton High School</th>
+      <td>83.441964</td>
+      <td>84.373786</td>
+      <td>82.781671</td>
+      <td>84.122642</td>
+    </tr>
+    <tr>
+      <th>Thomas High School</th>
+      <td>84.254157</td>
+      <td>83.585542</td>
+      <td>83.831361</td>
+      <td>83.728850</td>
+    </tr>
+    <tr>
+      <th>Wilson High School</th>
+      <td>84.021452</td>
+      <td>83.764608</td>
+      <td>84.317673</td>
+      <td>83.939778</td>
+    </tr>
+    <tr>
+      <th>Wright High School</th>
+      <td>83.812757</td>
+      <td>84.156322</td>
+      <td>84.073171</td>
+      <td>83.833333</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+# Scores by School Spending
+
+
+```python
+academy_adjusted_df=pd.DataFrame(Schools_summary_final)
+budget_bins = [0,600,620,640,1000]
+budget_bin_labels = ['<$600','$601-620','$621-640','>$641']
+academy_adjusted_df["Budget Bin"]= pd.cut(Schools_summary_final["Budget per Student"],budget_bins,labels=budget_bin_labels)
+size_bins =[0,2000,4000,5000]
+size_bin_labels = ['Small','Medium','Large']
+academy_adjusted_df["School Size"]= pd.cut(Schools_summary_final["Total Students"],size_bins,labels=size_bin_labels)
+academy_adjusted_df
+```
+
+
+
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>School Type</th>
+      <th>Total Students</th>
+      <th>Total Budget</th>
+      <th>Budget per Student</th>
+      <th>Average Math Score %</th>
+      <th>Passing Math %</th>
+      <th>Average Reading Score %</th>
+      <th>Passing Reading %</th>
+      <th>Overall Passing %</th>
+      <th>Budget Bin</th>
+      <th>School Size</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Bailey High School</th>
+      <td>[District]</td>
+      <td>4976</td>
+      <td>3124928</td>
+      <td>628.0</td>
+      <td>77.048432</td>
+      <td>66.680064</td>
+      <td>81.033963</td>
+      <td>81.933280</td>
+      <td>74.306672</td>
+      <td>$621-640</td>
+      <td>Large</td>
+    </tr>
+    <tr>
+      <th>Cabrera High School</th>
+      <td>[Charter]</td>
+      <td>1858</td>
+      <td>1081356</td>
+      <td>582.0</td>
+      <td>83.061895</td>
+      <td>94.133477</td>
+      <td>83.975780</td>
+      <td>97.039828</td>
+      <td>95.586652</td>
+      <td>&lt;$600</td>
+      <td>Small</td>
+    </tr>
+    <tr>
+      <th>Figueroa High School</th>
+      <td>[District]</td>
+      <td>2949</td>
+      <td>1884411</td>
+      <td>639.0</td>
+      <td>76.711767</td>
+      <td>65.988471</td>
+      <td>81.158020</td>
+      <td>80.739234</td>
+      <td>73.363852</td>
+      <td>$621-640</td>
+      <td>Medium</td>
+    </tr>
+    <tr>
+      <th>Ford High School</th>
+      <td>[District]</td>
+      <td>2739</td>
+      <td>1763916</td>
+      <td>644.0</td>
+      <td>77.102592</td>
+      <td>68.309602</td>
+      <td>80.746258</td>
+      <td>79.299014</td>
+      <td>73.804308</td>
+      <td>&gt;$641</td>
+      <td>Medium</td>
+    </tr>
+    <tr>
+      <th>Griffin High School</th>
+      <td>[Charter]</td>
+      <td>1468</td>
+      <td>917500</td>
+      <td>625.0</td>
+      <td>83.351499</td>
+      <td>93.392371</td>
+      <td>83.816757</td>
+      <td>97.138965</td>
+      <td>95.265668</td>
+      <td>$621-640</td>
+      <td>Small</td>
+    </tr>
+    <tr>
+      <th>Hernandez High School</th>
+      <td>[District]</td>
+      <td>4635</td>
+      <td>3022020</td>
+      <td>652.0</td>
+      <td>77.289752</td>
+      <td>66.752967</td>
+      <td>80.934412</td>
+      <td>80.862999</td>
+      <td>73.807983</td>
+      <td>&gt;$641</td>
+      <td>Large</td>
+    </tr>
+    <tr>
+      <th>Holden High School</th>
+      <td>[Charter]</td>
+      <td>427</td>
+      <td>248087</td>
+      <td>581.0</td>
+      <td>83.803279</td>
+      <td>92.505855</td>
+      <td>83.814988</td>
+      <td>96.252927</td>
+      <td>94.379391</td>
+      <td>&lt;$600</td>
+      <td>Small</td>
+    </tr>
+    <tr>
+      <th>Huang High School</th>
+      <td>[District]</td>
+      <td>2917</td>
+      <td>1910635</td>
+      <td>655.0</td>
+      <td>76.629414</td>
+      <td>65.683922</td>
+      <td>81.182722</td>
+      <td>81.316421</td>
+      <td>73.500171</td>
+      <td>&gt;$641</td>
+      <td>Medium</td>
+    </tr>
+    <tr>
+      <th>Johnson High School</th>
+      <td>[District]</td>
+      <td>4761</td>
+      <td>3094650</td>
+      <td>650.0</td>
+      <td>77.072464</td>
+      <td>66.057551</td>
+      <td>80.966394</td>
+      <td>81.222432</td>
+      <td>73.639992</td>
+      <td>&gt;$641</td>
+      <td>Large</td>
+    </tr>
+    <tr>
+      <th>Pena High School</th>
+      <td>[Charter]</td>
+      <td>962</td>
+      <td>585858</td>
+      <td>609.0</td>
+      <td>83.839917</td>
+      <td>94.594595</td>
+      <td>84.044699</td>
+      <td>95.945946</td>
+      <td>95.270270</td>
+      <td>$601-620</td>
+      <td>Small</td>
+    </tr>
+    <tr>
+      <th>Rodriguez High School</th>
+      <td>[District]</td>
+      <td>3999</td>
+      <td>2547363</td>
+      <td>637.0</td>
+      <td>76.842711</td>
+      <td>66.366592</td>
+      <td>80.744686</td>
+      <td>80.220055</td>
+      <td>73.293323</td>
+      <td>$621-640</td>
+      <td>Medium</td>
+    </tr>
+    <tr>
+      <th>Shelton High School</th>
+      <td>[Charter]</td>
+      <td>1761</td>
+      <td>1056600</td>
+      <td>600.0</td>
+      <td>83.359455</td>
+      <td>93.867121</td>
+      <td>83.725724</td>
+      <td>95.854628</td>
+      <td>94.860875</td>
+      <td>&lt;$600</td>
+      <td>Small</td>
+    </tr>
+    <tr>
+      <th>Thomas High School</th>
+      <td>[Charter]</td>
+      <td>1635</td>
+      <td>1043130</td>
+      <td>638.0</td>
+      <td>83.418349</td>
+      <td>93.272171</td>
+      <td>83.848930</td>
+      <td>97.308869</td>
+      <td>95.290520</td>
+      <td>$621-640</td>
+      <td>Small</td>
+    </tr>
+    <tr>
+      <th>Wilson High School</th>
+      <td>[Charter]</td>
+      <td>2283</td>
+      <td>1319574</td>
+      <td>578.0</td>
+      <td>83.274201</td>
+      <td>93.867718</td>
+      <td>83.989488</td>
+      <td>96.539641</td>
+      <td>95.203679</td>
+      <td>&lt;$600</td>
+      <td>Medium</td>
+    </tr>
+    <tr>
+      <th>Wright High School</th>
+      <td>[Charter]</td>
+      <td>1800</td>
+      <td>1049400</td>
+      <td>583.0</td>
+      <td>83.682222</td>
+      <td>93.333333</td>
+      <td>83.955000</td>
+      <td>96.611111</td>
+      <td>94.972222</td>
+      <td>&lt;$600</td>
+      <td>Small</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+academy_budget_df= academy_adjusted_df.groupby(["Budget Bin"]).mean()
+academy_budget_df = academy_budget_df[['Average Math Score %',"Passing Math %","Average Reading Score %","Passing Reading %","Overall Passing %"]]
+academy_budget_df
+```
+
+
+
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Average Math Score %</th>
+      <th>Passing Math %</th>
+      <th>Average Reading Score %</th>
+      <th>Passing Reading %</th>
+      <th>Overall Passing %</th>
+    </tr>
+    <tr>
+      <th>Budget Bin</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>&lt;$600</th>
+      <td>83.436210</td>
+      <td>93.541501</td>
+      <td>83.892196</td>
+      <td>96.459627</td>
+      <td>95.000564</td>
+    </tr>
+    <tr>
+      <th>$601-620</th>
+      <td>83.839917</td>
+      <td>94.594595</td>
+      <td>84.044699</td>
+      <td>95.945946</td>
+      <td>95.270270</td>
+    </tr>
+    <tr>
+      <th>$621-640</th>
+      <td>79.474551</td>
+      <td>77.139934</td>
+      <td>82.120471</td>
+      <td>87.468080</td>
+      <td>82.304007</td>
+    </tr>
+    <tr>
+      <th>&gt;$641</th>
+      <td>77.023555</td>
+      <td>66.701010</td>
+      <td>80.957446</td>
+      <td>80.675217</td>
+      <td>73.688113</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+# Scores by School Size
+
+
+```python
+academy_size_df= academy_adjusted_df.groupby(["School Size"]).mean()
+academy_size_df = academy_size_df[['Average Math Score %',"Passing Math %","Average Reading Score %","Passing Reading %","Overall Passing %"]]
+academy_size_df
+```
+
+
+
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Average Math Score %</th>
+      <th>Passing Math %</th>
+      <th>Average Reading Score %</th>
+      <th>Passing Reading %</th>
+      <th>Overall Passing %</th>
+    </tr>
+    <tr>
+      <th>School Size</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Small</th>
+      <td>83.502373</td>
+      <td>93.585560</td>
+      <td>83.883125</td>
+      <td>96.593182</td>
+      <td>95.089371</td>
+    </tr>
+    <tr>
+      <th>Medium</th>
+      <td>78.112137</td>
+      <td>72.043261</td>
+      <td>81.564235</td>
+      <td>83.622873</td>
+      <td>77.833067</td>
+    </tr>
+    <tr>
+      <th>Large</th>
+      <td>77.136883</td>
+      <td>66.496861</td>
+      <td>80.978256</td>
+      <td>81.339570</td>
+      <td>73.918215</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+# Scores by School Type
+
+
+```python
+academy_adjusted_df['School Type']= academy_adjusted_df['School Type'].astype('str') 
+academy_type_df= academy_adjusted_df.groupby(["School Type"]).mean()
+academy_type_df = academy_type_df[['Average Math Score %',"Passing Math %","Average Reading Score %","Passing Reading %","Overall Passing %"]]
+academy_type_df
+```
+
+
+
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Average Math Score %</th>
+      <th>Passing Math %</th>
+      <th>Average Reading Score %</th>
+      <th>Passing Reading %</th>
+      <th>Overall Passing %</th>
+    </tr>
+    <tr>
+      <th>School Type</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>['Charter']</th>
+      <td>83.473852</td>
+      <td>93.620830</td>
+      <td>83.896421</td>
+      <td>96.586489</td>
+      <td>95.103660</td>
+    </tr>
+    <tr>
+      <th>['District']</th>
+      <td>76.956733</td>
+      <td>66.548453</td>
+      <td>80.966636</td>
+      <td>80.799062</td>
+      <td>73.673757</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
