@@ -49,7 +49,7 @@ BUSINESS_PATH = '/v3/businesses/'  # Business ID will come after slash.
 
 
 # Defaults for our simple example.
-DEFAULT_TERM = 'american'
+DEFAULT_TERM = 'indian'
 DEFAULT_LOCATION = 'New York, NY'
 SEARCH_LIMIT = 50
 OFFSET = 200
