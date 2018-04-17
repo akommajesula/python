@@ -1,0 +1,19 @@
+body2 {
+    background-image: url("https://st.depositphotos.com/1742172/2007/v/950/depositphotos_20079379-stock-illustration-alien-slug-monster-cartoon.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    opacity: 2;
+}
+
+.w_b2 {
+	background-color: rgba(220, 217, 217, 0.43);
+}
+
+#scroll {
+	background-color: black;
+	color: #3fd31d;
+	font-weight: bold;
+	font-family: "Lucida Console";
+	font-size: 26px;
+	vertical-align: top;
+}
