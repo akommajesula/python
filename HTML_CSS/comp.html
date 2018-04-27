@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>What's Up With The Weather?!</title>
+
+<!-- Bootstrap -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<!-- Additional CSS stylesheet -->
+<link rel="stylesheet" href="css/styles.css">
+
+</head>
+<body>
+  <!-- NAV Bar -->
+    <div class="topnav">
+        <a href="index.html">Home</a>
+        <a href="latvcloud.html">Lat v Cloud Coverage</a>
+        <a href="latvhum.html">Lat v Humidity</a>
+        <a href="latvtemp.html">Lat v Temperature</a>
+        <a href="latvws.html">Lat v Wind Speed</a>
+        <a class="active" href="comp.html">Comparisons</a>
+        <a href="data.html">Data</a>
+    </div>
+<div class="jumbotron"></div>    
+<div class = "container">
+    <div class = "row">
+      <div class = "col-sm-12 col-md-12 w_b">
+        <h2 class = "main_text"><strong>Comparison: Latitude vs. </strong></h2>
+        <div class = "row">
+            <div class = "col-sm-14 col-md-4">
+              <a href = "latvtemp.html">
+                <div class = "thumbnail">
+                  <h5 class = "main_text"><strong>Temperature</strong></h5>
+                  <img class="img-responsive" src = "Images/Lat_vs_Temp.png" alt = "Latitude v Temperature" style="width:100%">
+                </div>
+              </a>
+            </div>
+            <div class = "col-sm-14 col-md-4">
+              <a href = "latvhum.html">
+                <div class = "thumbnail">
+                  <h5 class = "main_text"><strong>Humidity</strong></h5>
+                  <img class="img-responsive" src = "Images/Lat_vs_Hum.png" alt = "Latitude v Humidty" style="width:100%">
+                </div>
+              </a>
+            </div>
+          </div>
+        <div class = "row">
+          <div class = "col-sm-14 col-md-4">
+            <a href = "latvsw.html">
+              <div class = "thumbnail">
+                <h5 class = "main_text"><strong>Wind Speed</strong></h5>
+                <img class="img-responsive" src = "Images/Lat_vs_WindSpeed.png" alt = "Latitude v Wind Speed" style="width:100%">
+              </div>
+            </a>
+          </div>
+          <div class = "col-sm-14 col-md-4">
+            <a href = "latvcloud.html">
+              <div class = "thumbnail">
+                <h5 class = "main_text"><strong>Cloud Coverage</strong></h5>
+                <img class="img-responsive" src = "Images/Lat_vs_Cloud.png" alt = "Latitude v Cloud Coverage" style="width:100%">
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    
+
+    <div class="footer">
+      <p>Copyright JMS Research Corp. 2018</p>
+    </div>
+
+  </body>
+</html>
